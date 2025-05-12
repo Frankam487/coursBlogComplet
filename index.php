@@ -3,7 +3,7 @@ require_once 'database/database.php';
 
 require 'vendor/autoload.php';
 use JasonGrimes\Paginator; 
-$itemsPerpage = 10;
+$itemsPerpage = 2;
 $currentPage = $_GET['page'] ?? 1;
 
 $totlQuery = $pdo->prepare("SELECT count(*) FROM articles");

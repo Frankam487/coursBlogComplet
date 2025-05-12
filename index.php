@@ -1,10 +1,38 @@
 <?php
 require_once 'database/database.php';
 
+require 'vendor/autoload.php';
+use JasonGrimes\Paginator; 
+$itemsPerpage = 10;
+$currentPage = $_GET['page'] ?? 1;
+
+$totlQuery = $pdo->prepare("SELECT count(*) FROM articles");
+$total = $totlQuery->fetchColumn();
+
+$offset = ($currentPage - 1) * $itemsPerpage;
+
 //recuperation des articles de la base de donnees
 $resultats = $pdo->query("SELECT * FROM articles ORDER BY created_at DESC");
 $articles = $resultats->fetchAll();
+$sql  = "SELECT * FROM articles ORDER BY created_at DESC LIMIT :limit OFFSET :offset";
 
+$stmt = $pdo->prepare($sql);
+$stmt->bindParam(':limit', $itemsPerpage, PDO::PARAM_INT);
+$stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+$stmt->execute();
+$articles = $stmt->fetchAll();
+
+// pagination
+$paginator = new Paginator(
+  $totalItems,
+  $itemsPerPage,
+  $currentPage,
+  '/index.php?page=:page',
+)
+// if($total > $itemsPerpage){
+//     $paginator = new Paginator($total, $itemsPerpage);
+//     $articles = $paginator->paginate($articles);
+// }
 // 1--On affiche le titre autre
 
 $pageTitle ='Accueil du Blog'; 
@@ -21,5 +49,3 @@ $pageContent = ob_get_clean();
 
 //5-Inclure le layout de la page de sortie
 require_once 'layouts/layout_html.php';
-
-

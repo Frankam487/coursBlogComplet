@@ -2,18 +2,16 @@
 require_once 'database/database.php';
 require 'vendor/autoload.php';
 use JasonGrimes\Paginator; 
+$totalQuery = $pdo->query("SELECT COUNT(*) FROM articles");
+$total = $totalQuery->fetchColumn();
 $itemsPerpage = 2;
+// $totalQuery->execute();
 $currentPage = $_GET['page'] ?? 1;
 
-$totalQuery = $pdo->prepare("SELECT count(*) FROM articles");
-$totalQuery->execute();
-$total = $totalQuery->fetchColumn();
 
 $offset = ($currentPage - 1) * $itemsPerpage;
 
-//recuperation des articles de la base de donnees
-$resultats = $pdo->query("SELECT * FROM articles ORDER BY created_at DESC");
-$articles = $resultats->fetchAll();
+
 $sql  = "SELECT * FROM articles ORDER BY created_at DESC LIMIT :limit OFFSET :offset";
 
 $stmt = $pdo->prepare($sql);
@@ -21,7 +19,9 @@ $stmt->bindParam(':limit', $itemsPerpage, PDO::PARAM_INT);
 $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
 $stmt->execute();
 $articles = $stmt->fetchAll();
-
+// var_dump($articles);
+// $sql = $pdo->query('SELECT count(*) FROM articles');
+// var_dump($sql->fetchColumn());
 // pagination
 $paginator = new Paginator(
   $total,
@@ -32,10 +32,10 @@ $paginator = new Paginator(
 
 // 1--On affiche le titre autre
 
-$pageTitle ='Accueil du Blog'; 
+$pageTitle ='Accueil du Blog';
 
 // 2-Debut du tampon de la page de sortie
- 
+
 ob_start();
 
 // 3-inclure le layout de la page d' accueil

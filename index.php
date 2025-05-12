@@ -1,13 +1,13 @@
 <?php
 require_once 'database/database.php';
-
 require 'vendor/autoload.php';
 use JasonGrimes\Paginator; 
 $itemsPerpage = 2;
 $currentPage = $_GET['page'] ?? 1;
 
-$totlQuery = $pdo->prepare("SELECT count(*) FROM articles");
-$total = $totlQuery->fetchColumn();
+$totalQuery = $pdo->prepare("SELECT count(*) FROM articles");
+$totalQuery->execute();
+$total = $totalQuery->fetchColumn();
 
 $offset = ($currentPage - 1) * $itemsPerpage;
 
@@ -24,15 +24,12 @@ $articles = $stmt->fetchAll();
 
 // pagination
 $paginator = new Paginator(
-  $totalItems,
-  $itemsPerPage,
+  $total,
+  $itemsPerpage,
   $currentPage,
-  '/index.php?page=:page',
-)
-// if($total > $itemsPerpage){
-//     $paginator = new Paginator($total, $itemsPerpage);
-//     $articles = $paginator->paginate($articles);
-// }
+  '?page=(:num)'
+);
+
 // 1--On affiche le titre autre
 
 $pageTitle ='Accueil du Blog'; 

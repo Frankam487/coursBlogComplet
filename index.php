@@ -1,4 +1,5 @@
 <?php
+
 require_once 'libraries/database.php';
 $pdo = getPdo();
 require 'vendor/autoload.php';

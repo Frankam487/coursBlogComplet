@@ -1,12 +1,7 @@
-
-
 <?php
 require_once 'database/database.php';
 
-
-
 $pageTitle ='Page User'; 
-
 
  
 ob_start();

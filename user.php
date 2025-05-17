@@ -3,11 +3,11 @@
 <?php
 require_once 'database/database.php';
 
-// 1--On affiche le titre autre
+
 
 $pageTitle ='Page User'; 
 
-// 2-Debut du tampon de la page de sortie
+
  
 ob_start();
 

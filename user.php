@@ -1,8 +1,8 @@
 
 
 <?php
-require_once 'database/database.php';
-
+require_once 'libraries/database.php';
+$pdo = getPdo();
 // 1--On affiche le titre autre
 
 $pageTitle ='Page User'; 

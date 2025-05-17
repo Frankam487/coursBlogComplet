@@ -2,7 +2,10 @@
 session_start();
 
 
-require_once 'database/database.php';
+require_once 'libraries/database.php';
+ 
+$pdo = getPdo();
+
 
 
 if (isset($_POST['register'])) {
@@ -62,7 +65,7 @@ if (isset($_POST['register'])) {
 
  
 }
-require_once 'database/database.php';
+require_once 'libraries/database.php';
 
 // 1-On affiche le titre
 
@@ -81,5 +84,5 @@ $pageContent = ob_get_clean();
 //5-Inclure le layout de la page de sortie
 require_once 'layouts/layout_html.php';
 
-require_once 'database/database.php';
+require_once 'libraries/database.php';
 
